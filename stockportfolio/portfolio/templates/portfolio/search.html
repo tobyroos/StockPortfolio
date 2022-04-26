@@ -11,8 +11,8 @@
     {% for stock in data %}
     <div class="search-table">
         <div class="info">
-            <h4>{{stock.symbol}}</h4>
-            <h5>{{stock.price}}</h5>
+            <h4>{{stock.symbol_field}}</h4>
+            <h5>{{stock.price_field}}</h5>
         </div>
     </div>
     <form method="POST" action="/portfolio/buy/">

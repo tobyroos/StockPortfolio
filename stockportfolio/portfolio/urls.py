@@ -5,6 +5,7 @@ app_name = 'portfolio'
 
 urlpatterns = [
     path('', views.index, name="index"),
+    path('update/', views.update, name="update"),
     path('search/', views.search, name="search"),
     path('wallet/', views.wallet, name="wallet"),
     path('buy/', views.buy, name="buy"),

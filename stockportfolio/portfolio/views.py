@@ -11,6 +11,11 @@ from decimal import *
 
 def index(request):
     data = StockModel.objects.all()
+    return render(request, 'portfolio/index.html', {'data': data})
+
+
+def update(request):
+    data = StockModel.objects.all()
 
     for stockName in data:
         stock = yf.Ticker(stockName.symbol_field)
@@ -20,19 +25,21 @@ def index(request):
 
         stockName.save()
 
-    return render(request, 'portfolio/index.html', {'data': data})
+    return redirect('portfolio:index')
 
 
 def search(request):
 
     if request.method == 'POST':
-        sym = request.POST.get('sym', '').upper()
-        stock = yf.Ticker(sym)
+        symbol = request.POST.get('sym', '').upper()
+        stock = yf.Ticker(symbol)
         BuyModel.objects.all().delete()
         try:
-            currentPrice = str(stock.info['currentPrice'])
-            currentPrice = Decimal(currentPrice)
-            BuyModel.objects.create(symbol=sym, price=currentPrice)
+            name = str(stock.info['longName'])
+            sector = str(stock.info['sector'])
+            currency = str(stock.info['currency'])
+            price = Decimal(str(stock.info['currentPrice']))
+            BuyModel.objects.create(symbol_field=symbol, name_field=name, sector_field=sector, currency_field=currency, price_field=price)
         except:
             print("Not Valid")
     else:
@@ -44,23 +51,36 @@ def search(request):
 def buy(request):
     data = BuyModel.objects.all()
     walletData = WalletModel.objects.all()
+
     if request.method == 'POST':
-        shares = str(request.POST.get('share', ''))
-        shares = Decimal(shares)
+
         symbol = ""
-        wallet = Decimal(0)
+        name = ""
+        sector = ""
+        currency = ""
         price = Decimal(0)
+        price_bought = Decimal(0)
+        shares = Decimal(str(request.POST.get('share', '')))
+
         for stock in data:
-            symbol = stock.symbol
-            price = Decimal(stock.price * shares)
+            symbol = stock.symbol_field
+            name = stock.name_field
+            sector = stock.sector_field
+            currency = stock.currency_field
+            price = Decimal(stock.price_field)
+            price_bought = price * shares
+
+        wallet = Decimal(0)
         for w in walletData:
             wallet = Decimal(w.money_field)
 
-        if wallet >= price:
+        if wallet >= price_bought:
             try:
-                StockModel.objects.create(symbol_field=symbol, price_bought_field=price, shares_field=shares)
+                StockModel.objects.create(symbol_field=symbol, name_field=name, sector_field=sector,
+                                          currency_field=currency, price_field=price,
+                                          price_bought_field=price_bought, shares_field=shares)
                 for w in walletData:
-                    w.money_field -= price
+                    w.money_field -= price_bought
                     w.save()
                 print("You bought ", symbol)
             except:
@@ -126,7 +146,6 @@ def detail(request, id):
 
     stock_model = StockModel.objects.get(symbol_field=id)
     stock = yf.Ticker(id)
-    stock_info = stock.info
     stockPlot = stock.history(period)
 
     stockPlot = stockPlot.drop(columns=['Open','High','Low','Dividends','Stock Splits', 'Volume'])
@@ -146,7 +165,7 @@ def detail(request, id):
 
     chart = fig.to_html()
 
-    context = {'stock_model': stock_model, 'stock': stock_info, 'chart': chart}
+    context = {'stock': stock_model, 'chart': chart}
 
     return render(request, 'portfolio/detail.html', context)
 
@@ -155,7 +174,7 @@ def sell(request, id):
     print("Sell")
     stock = StockModel.objects.get(id=id)
     wallet = WalletModel.objects.all()
-    value = getattr(stock, "price")
+    value = getattr(stock, "price_field")
     share = getattr(stock, "shares_field")
     value = Decimal(value * share)
 
