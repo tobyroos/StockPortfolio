@@ -1,0 +1,25 @@
+{% extends 'portfolio/navigation.html' %}
+{% block body %}
+    <h1>Search</h1>
+    <form method="POST" action="">
+        {% csrf_token %}
+        <input type="text" class="" name="sym" id="sym" placeholder="enter stock symbol, ex. 'goog'"
+               maxlength="5">
+        <button class="btn btn-primary" type="submit">Search</button>
+    </form>
+    <hr>
+    {% for stock in data %}
+    <div class="search-table">
+        <div class="info">
+            <h4>{{stock.symbol}}</h4>
+            <h5>{{stock.price}}</h5>
+        </div>
+    </div>
+    <form method="POST" action="/portfolio/buy/">
+        {% csrf_token %}
+        <input type="number" class="" name="share" id="share" placeholder="# shares">
+        <button class="btn btn-primary" type="submit">Buy</button>
+    </form>
+    {% endfor %}
+
+{% endblock %}

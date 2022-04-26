@@ -1,0 +1,29 @@
+{% extends 'portfolio/navigation.html' %}
+{% block body %}
+<h1>{{stock_model.symbol_field}}</h1>
+<h1>{{stock.longName}}</h1>
+<h2>Sector: {{stock.sector}}</h2>
+<h2>Current Price: ${{stock.currentPrice}}</h2>
+<h2>Shares: {{stock_model.shares_field}}</h2>
+<h2>Market Value: ${{stock_model.market_value}}</h2>
+<h2>Currency: {{stock.currency}}</h2>
+<form method="POST" action="{% url 'portfolio:sell' stock_model.id %}">
+  {% csrf_token %}
+  <input class="btn btn-primary" type="submit" value="Sell">
+</form>
+
+<form method="POST" action="">
+  {% csrf_token %}
+  <select name="filter" id="filter">
+    <option value="7d">7 Day</option>
+    <option value="1mo">1 Month</option>
+    <option value="6mo">6 Month</option>
+    <option value="1y">1 Year</option>
+    <option value="max">Max</option>
+  </select>
+  <button class="btn btn-primary" type="submit">Filter</button>
+</form>
+
+{{ chart|safe }}
+
+{% endblock %}
