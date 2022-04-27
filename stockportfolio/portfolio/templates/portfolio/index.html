@@ -1,50 +1,46 @@
 {% extends 'portfolio/navigation.html' %}
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
-</head>
-<body>
 {% block body %}
-<h1>Portfolio</h1>
-<a href="{% url 'portfolio:update' %}" class="btn btn-primary">Refresh Stocks</a>
-<table class="table">
-  <thead class="thead-dark">
-    <tr>
-      <th scope="col">Symbol</th>
-      <th scope="col">Price</th>
-      <th scope="col">Shares</th>
-      <th scope="col">Market Value</th>
-      <th scope="col">Gain</th>
-    </tr>
-  </thead>
-  <tbody>
-    {% for stock in data %}
-    <tr>
-      <td><a href="{% url 'portfolio:detail' stock.symbol_field %}">{{stock.symbol_field}}</a></td>
-      <td>{{stock.price_field}}</td>
-      <td>{{stock.shares_field}}</td>
-      <td>{{stock.market_value}}</td>
-      <td>{{stock.net_gain}}</td>
-    </tr>
-    {% endfor %}
-  </tbody>
+<div class="header align">
+    <div class="title">
+        Portfolio
+    </div>
+    <div class="bottom-right">
+        <a href="{% url 'portfolio:update' %}" class="btn btn-detail">Refresh Stocks</a>
+    </div>
+</div>
+<table class="table table-striped">
+    <thead class="thead-dark">
+        <tr>
+            <th scope="col"></th>
+            <th scope="col">Symbol</th>
+            <th scope="col">Price</th>
+            <th scope="col">Shares</th>
+            <th scope="col">Market Value</th>
+            <th scope="col">Gain</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for stock in data %}
+        <tr>
+            <td class="table-detail"><a href="{% url 'portfolio:detail' stock.symbol_field %}" class="btn btn-detail">More Details</a></td>
+            <td>{{stock.symbol_field}}</td>
+            <td>{{stock.price_field}}</td>
+            <td>{{stock.shares_field}}</td>
+            <td>{{stock.market_value}}</td>
+            <td>{{stock.net_gain}}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
 </table>
-<p class="legend">
-    Symbol: Symbol of the stock
+<div class="legend">
+    <b>Symbol:</b> Symbol of the stock
     <br>
-    Price: Current Value of 1 share
+    <b>Price:</b> Current Value of 1 share
     <br>
-    Shares: Number of shares you own
+    <b>Shares:</b> Number of shares you own
     <br>
-    Market Value: Current value of all owned shares
+    <b>Market</b> Value: Current value of all owned shares
     <br>
-    Gain: Net gain of shares
-</p>
+    <b>Gain:</b> Net gain of shares
+</div>
 {% endblock %}
-</body>
-</html>

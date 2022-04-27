@@ -1,30 +1,27 @@
 {% extends 'portfolio/navigation.html' %}
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
-</head>
-<body>
 {% block body %}
-    <h1>Wallet</h1>
-    {% for money in data %}
-    <h2>${{money.money_field}}</h2>
-    {% endfor %}
+    <div class="header">
+        <div class="title">
+            Wallet
+        </div>
+        <div class="bottom-right">
+            {% for money in data %}
+            <div class="sub-title">${{money.money_field}}</div>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="body">
+        <hr>
+        <form method="POST" action="/portfolio/add/" class="flex">
+            {% csrf_token %}
+            <input type="number" class="form-control fund" name="add" id="add" placeholder="Enter amount to add" step="0.01" min="0" >
+            <button class="btn btn-detail" type="submit">Add Funds</button>
+        </form>
+        <form method="POST" action="/portfolio/withdraw/" class="flex mt-1">
+            {% csrf_token %}
+            <input type="number" class="form-control fund" name="withdraw" id="withdraw" placeholder="Enter amount to withdraw" step="0.01" min="0">
+            <button class="btn btn-detail" type="submit">Withdraw Funds</button>
+        </form>
+    </div>
 
-    <form method="POST" action="/portfolio/add/">
-        {% csrf_token %}
-        <input type="number" class="" name="add" id="add" placeholder="Enter amount to add" step="0.01" min="0" >
-        <button class="btn btn-primary" type="submit">Add Funds</button>
-    </form>
-    <form method="POST" action="/portfolio/withdraw/">
-        {% csrf_token %}
-        <input type="number" class="" name="withdraw" id="withdraw" placeholder="Enter amount to withdraw" step="0.01" min="0">
-        <button class="btn btn-primary" type="submit">Withdraw Funds</button>
-    </form>
 {% endblock %}
-</body>
-</html>

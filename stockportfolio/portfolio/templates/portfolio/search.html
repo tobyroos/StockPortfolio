@@ -1,25 +1,44 @@
 {% extends 'portfolio/navigation.html' %}
 {% block body %}
-    <h1>Search</h1>
-    <form method="POST" action="">
-        {% csrf_token %}
-        <input type="text" class="" name="sym" id="sym" placeholder="enter stock symbol, ex. 'goog'"
-               maxlength="5">
-        <button class="btn btn-primary" type="submit">Search</button>
-    </form>
-    <hr>
-    {% for stock in data %}
-    <div class="search-table">
-        <div class="info">
-            <h4>{{stock.symbol_field}}</h4>
-            <h5>{{stock.price_field}}</h5>
+    <div class="header">
+        <div class="title">Search</div>
+        <div class="bottom-right">
+            {% for money in wallet %}
+            <div class="sub-title">${{money.money_field}}</div>
+            {% endfor %}
         </div>
     </div>
-    <form method="POST" action="/portfolio/buy/">
-        {% csrf_token %}
-        <input type="number" class="" name="share" id="share" placeholder="# shares">
-        <button class="btn btn-primary" type="submit">Buy</button>
-    </form>
+    <div class="body">
+        <form method="POST" action="" class="flex">
+            {% csrf_token %}
+            <input type="text" class="form-control search" name="sym" id="sym" placeholder="stock symbol, ex. 'goog'"
+                   maxlength="5">
+            <button class="btn btn-detail" type="submit">Search</button>
+        </form>
+        <hr>
+    </div>
+    {% for stock in data %}
+    <div class="body">
+        <div class="flex">
+            <div class="sub-title">{{stock.symbol_field}}</div>
+            <div class="meta">
+                <div class="comp-name">
+                    {{stock.name_field}}
+                </div>
+                <div class="sector">
+                    {{stock.sector_field}}
+                </div>
+            </div>
+        </div>
+        <div class="price">
+            {{stock.price_field}} {{stock.currency_field}}
+        </div>
+        <form method="POST" action="/portfolio/buy/" class="flex">
+            {% csrf_token %}
+            <input type="number" class="form-control buy" name="share" id="share" placeholder="# shares" step="0.01" min="0">
+            <button class="btn btn-success" type="submit">Buy</button>
+        </form>
+    </div>
     {% endfor %}
 
 {% endblock %}

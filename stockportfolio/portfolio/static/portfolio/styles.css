@@ -1,0 +1,137 @@
+body {
+    background-color: #ffffff!important;
+    font-family: sans-serif!important;
+}
+
+.navbar {
+    background-color: #1f2179 !important;
+}
+
+.navbar-brand {
+    padding-left: 10px !important;
+    color: white !important;
+}
+
+.navbar-brand:hover {
+    color: #eaa732 !important;
+}
+
+.nav-item {
+    color: #ffffff !important;
+}
+
+.nav-item:hover {
+    color: #eaa732 !important;
+}
+
+.btn-detail {
+    background-color: #1f2179 !important;
+    color: #ffffff !important;
+}
+.btn-detail:hover {
+    color: #eaa732 !important;
+}
+
+.table {
+    margin-left: 5%;
+    width: 90% !important;
+}
+
+.table-striped > tbody > tr:nth-child(2n+1) > td, .table-striped > tbody > tr:nth-child(2n+1) > th {
+   background-color: #cfcb;
+}
+
+.table-detail {
+    width: 135px ;
+}
+
+.legend {
+    margin-left: 10%;
+    font-size: 11px;
+}
+
+.header {
+    display: flex;
+    position: relative;
+    width: 90%;
+    margin-left: 5%;
+    margin-top: 20px;
+}
+
+.form-control {
+    margin-right: 5px !important;
+}
+
+.title {
+    font-size: 50px;
+    font-weight: bold;
+}
+
+.bottom-right {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+}
+
+.top-right {
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+.flex {
+    display: flex;
+}
+
+.rel {
+    position: relative;
+    margin-top: 20px;
+}
+
+.body {
+    width: 90%;
+    margin-left: 5%;
+}
+
+.sub-title {
+    font-size: 40px;
+    font-weight: bold;
+    vertical-align: center;
+}
+
+.meta {
+    margin-left: 25px;
+    padding-top: 10px;
+}
+
+.comp-name {
+    font-size: 15px;
+    font-weight: normal;
+}
+
+.sector {
+    font-size: 10px;
+    font-weight: lighter;
+}
+
+.price {
+    font-size: 30px;
+    font-weight: normal;
+    margin-bottom: 10px;
+}
+
+.buy {
+    width: 120px !important;
+}
+
+.fund {
+    width: 250px !important;
+}
+
+.search {
+    width: 200px !important;
+}
+
+.chart {
+    width: 100%;
+}

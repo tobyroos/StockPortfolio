@@ -1,29 +1,55 @@
 {% extends 'portfolio/navigation.html' %}
 {% block body %}
-<h1>{{stock.symbol_field}}</h1>
-<h1>{{stock.name_field}}</h1>
-<h2>Sector: {{stock.sector_field}}</h2>
-<h2>Current Price: ${{stock.price_field}}</h2>
-<h2>Shares: {{stock.shares_field}}</h2>
-<h2>Market Value: ${{stock.market_value}}</h2>
-<h2>Currency: {{stock.currency_field}}</h2>
-<form method="POST" action="{% url 'portfolio:sell' stock.id %}">
-  {% csrf_token %}
-  <input class="btn btn-primary" type="submit" value="Sell">
-</form>
+<div class="body">
+  <div class="flex rel">
+    <div class="sub-title">
+      {{stock.symbol_field}}
+    </div>
+    <div class="meta">
+      <div class="comp-name">
+          {{stock.name_field}}
+      </div>
+      <div class="sector">
+          {{stock.sector_field}}
+      </div>
+    </div>
+    <div class="top-right">
+      <form method="POST" action="{% url 'portfolio:sell' stock.id %}">
+        {% csrf_token %}
+        <input class="btn btn-success" type="submit" value="Sell">
+      </form>
+    </div>
+  </div>
+  <div class="price">
+    {{stock.price_field}} {{stock.currency_field}}
+  </div>
+  <hr>
+  <div class="flex rel">
+    <div class="price">
+      Shares: {{stock.shares_field}}
+      <br>
+      Market Value: {{stock.market_value}} {{stock.currency_field}}
+    </div>
+    <form method="POST" action="" class="bottom-right flex">
+      {% csrf_token %}
+      <select name="filter" id="filter" class="form-control">
+        <option value="7d">7 Day</option>
+        <option value="1mo">1 Month</option>
+        <option value="6mo">6 Month</option>
+        <option value="1y">1 Year</option>
+        <option value="max">Max</option>
+      </select>
+      <button class="btn btn-detail" type="submit">Filter</button>
+    </form>
+  </div>
+  <div class="chart">
+    {{ chart|safe }}
+  </div>
+</div>
 
-<form method="POST" action="">
-  {% csrf_token %}
-  <select name="filter" id="filter">
-    <option value="7d">7 Day</option>
-    <option value="1mo">1 Month</option>
-    <option value="6mo">6 Month</option>
-    <option value="1y">1 Year</option>
-    <option value="max">Max</option>
-  </select>
-  <button class="btn btn-primary" type="submit">Filter</button>
-</form>
 
-{{ chart|safe }}
+
+
+
 
 {% endblock %}

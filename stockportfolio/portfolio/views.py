@@ -8,6 +8,9 @@ from decimal import *
 
 # Create your views here.
 
+def start(request):
+    return redirect('portfolio:update')
+
 
 def index(request):
     data = StockModel.objects.all()
@@ -21,7 +24,7 @@ def update(request):
         stock = yf.Ticker(stockName.symbol_field)
 
         currentPrice = str(stock.info['currentPrice'])
-        stockName.price = Decimal(currentPrice)
+        stockName.price_field = Decimal(currentPrice)
 
         stockName.save()
 
@@ -45,7 +48,9 @@ def search(request):
     else:
         BuyModel.objects.all().delete()
     data = BuyModel.objects.all()
-    return render(request, 'portfolio/search.html', {'data': data})
+    wallet = WalletModel.objects.all()
+    context = {'data': data, 'wallet': wallet}
+    return render(request, 'portfolio/search.html', context)
 
 
 def buy(request):
@@ -84,7 +89,21 @@ def buy(request):
                     w.save()
                 print("You bought ", symbol)
             except:
-                print("Failed to buy stock")
+                stockName = StockModel.objects.get(symbol_field=symbol)
+
+                boughtInc = stockName.price_bought_field
+                boughtInc += price_bought
+                stockName.price_bought_field = boughtInc
+
+                sharesInc = stockName.shares_field
+                sharesInc += shares
+                stockName.shares_field = sharesInc
+
+                stockName.save()
+
+                for w in walletData:
+                    w.money_field -= price_bought
+                    w.save()
 
             data = StockModel.objects.all()
             return redirect('portfolio:index')
